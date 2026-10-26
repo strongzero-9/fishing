@@ -53,6 +53,8 @@ input{-webkit-appearance:none;appearance:none;min-height:48px}
 .seg button{min-height:44px;touch-action:manipulation}
 th,td{padding:12px}
 tbody tr{touch-action:manipulation}
+.scan{display:block;text-align:center;margin-top:14px;padding:14px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:600;cursor:pointer;min-height:48px}
+#scanbox[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -75,6 +77,11 @@ tbody tr{touch-action:manipulation}
 <div><b id="o-mm">-</b><span>diameter mm</span></div>
 </div>
 <p class="note" id="note"></p>
+<div id="scanbox" hidden>
+<label class="scan" for="cam">📷 Scan a line label</label>
+<input id="cam" type="file" accept="image/*" capture="environment" hidden>
+<p class="note" id="scanmsg"></p>
+</div>
 </div>
 <div class="card wt">
 <h2>Weight converter</h2>
@@ -163,6 +170,42 @@ function clearW(skip){['wg','woz','wgou'].forEach(function(i){if(i!==skip)$(i).v
  });
 });
 setW(3.75);
+(async function(){
+ var sample=null;
+ try{sample=window.claude?await claude.use('sample'):null}catch(e){}
+ if(!sample)return;
+ try{var lim=await sample.limits();if(!lim||!lim.images)return}catch(e){return}
+ $('scanbox').hidden=false;
+ function shrink(file){return new Promise(function(res,rej){
+  var img=new Image(),u=URL.createObjectURL(file);
+  img.onload=function(){
+   var s=Math.min(1,1400/Math.max(img.width,img.height)),c=document.createElement('canvas');
+   c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
+   c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+   URL.revokeObjectURL(u);
+   c.toBlob(function(b){b?res(b):rej(new Error('x'))},'image/jpeg',0.85);
+  };
+  img.onerror=function(){rej(new Error('x'))};
+  img.src=u;
+ })}
+ var inp=$('cam');
+ inp.addEventListener('change',async function(){
+  var f=inp.files&&inp.files[0];if(!f)return;
+  var m=$('scanmsg');m.textContent='Reading label...';
+  try{
+   var b=await shrink(f);
+   var r=await sample.json('This is a photo of a fishing line package or spool label. Find the line size and strength. Reply with ONLY JSON: {"type":"pe" or "ny" (pe for braided PE line, ny for nylon, fluorocarbon or mono), "gou": number or null (the Japanese size in gou), "lb": number or null (pound test)}. Use null for anything not printed on the label. If only kg is shown, convert to lb (1 kg = 2.2046 lb). No other text.',{images:[b],modelTier:'quick'});
+   var g=parseFloat(r&&r.gou),l=parseFloat(r&&r.lb);
+   if(r&&(r.type==='pe'||r.type==='ny'))setType(r.type);
+   if(g>0){$('gou').value=g;fromGou();m.textContent='Read from label: '+g+' gou.'}
+   else if(l>0){$('lb').value=l;fromLb();m.textContent='Read from label: '+l+' lb.'}
+   else{m.textContent='No size found on that photo. Try a closer, brighter shot of the label.'}
+  }catch(e){
+   m.textContent=(e&&e.code==='not_granted')?'Allow Claude to read the photo, then try again.':'Could not read that label. Try a closer, brighter photo.';
+  }
+  inp.value='';
+ });
+})();
 table();fromGou();
 </script>
 </body>
