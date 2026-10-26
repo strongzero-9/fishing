@@ -79,10 +79,11 @@ tbody tr{touch-action:manipulation}
 <div><b id="o-mm">-</b><span>diameter mm</span></div>
 </div>
 <p class="note" id="note"></p>
-<div id="scanbox" hidden>
+<div id="scanbox">
 <label class="scan" for="cam">📷 Scan a line label</label>
 <input id="cam" type="file" accept="image/*" capture="environment" hidden>
 <p class="note" id="scanmsg"></p>
+<details id="scandet" hidden><summary class="note">Text it read</summary><pre id="scanraw" style="white-space:pre-wrap;font-size:.8rem;color:var(--muted);margin:6px 0 0"></pre></details>
 </div>
 </div>
 <div class="card wt">
@@ -172,40 +173,71 @@ function clearW(skip){['wg','woz','wgou'].forEach(function(i){if(i!==skip)$(i).v
  });
 });
 setW(3.75);
-(async function(){
- var sample=null;
- try{sample=window.claude?await claude.use('sample'):null}catch(e){}
- if(!sample)return;
- try{var lim=await sample.limits();if(!lim||!lim.images)return}catch(e){return}
- $('scanbox').hidden=false;
- function shrink(file){return new Promise(function(res,rej){
+(function(){
+ var TV='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js',loading=null;
+ function loadLib(){
+  if(window.Tesseract)return Promise.resolve();
+  if(!loading)loading=new Promise(function(res,rej){
+   var sc=document.createElement('script');sc.src=TV;sc.onload=res;
+   sc.onerror=function(){loading=null;rej(new Error('load'))};
+   document.head.appendChild(sc);
+  });
+  return loading;
+ }
+ function prep(file){return new Promise(function(res,rej){
   var img=new Image(),u=URL.createObjectURL(file);
   img.onload=function(){
-   var s=Math.min(1,1400/Math.max(img.width,img.height)),c=document.createElement('canvas');
-   c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
-   c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+   var k=Math.min(1,1800/Math.max(img.width,img.height)),c=document.createElement('canvas');
+   c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+   var x=c.getContext('2d');x.drawImage(img,0,0,c.width,c.height);
    URL.revokeObjectURL(u);
-   c.toBlob(function(b){b?res(b):rej(new Error('x'))},'image/jpeg',0.85);
+   try{
+    var d=x.getImageData(0,0,c.width,c.height),p=d.data;
+    for(var i=0;i<p.length;i+=4){
+     var g=0.299*p[i]+0.587*p[i+1]+0.114*p[i+2];
+     g=(g-128)*1.5+128;g=g<0?0:g>255?255:g;
+     p[i]=p[i+1]=p[i+2]=g;
+    }
+    x.putImageData(d,0,0);
+   }catch(e){}
+   res(c);
   };
-  img.onerror=function(){rej(new Error('x'))};
+  img.onerror=function(){rej(new Error('img'))};
   img.src=u;
  })}
- var inp=$('cam');
- inp.addEventListener('change',async function(){
+ function ok(v){return v>=0.1&&v<=30}
+ function parse(t){
+  t=t.replace(/(\d),(\d)/g,'$1.$2');
+  var o={type:null,gou:null,lb:null};
+  if(/\bPE\b|braid|\bX[48]\b|\bWX/i.test(t))o.type='pe';
+  else if(/nylon|fluoro|\bFC\b|mono/i.test(t))o.type='ny';
+  var res=[/(\d+(?:\.\d+)?)\s*(?:gou|go\b|\u53f7)/i,/\bPE\s*(?:No\.?|#)?\s*(\d+(?:\.\d+)?)/i,/\bNo\.?\s*(\d+(?:\.\d+)?)/i];
+  for(var i=0;i<res.length&&o.gou===null;i++){var m=res[i].exec(t);if(m&&ok(parseFloat(m[1])))o.gou=parseFloat(m[1])}
+  var lm=/(\d+(?:\.\d+)?)\s*-?\s*(?:lbs?|ibs?)\b/i.exec(t);
+  if(lm)o.lb=parseFloat(lm[1]);
+  else{var km=/(\d+(?:\.\d+)?)\s*kg/i.exec(t);if(km)o.lb=Math.round(parseFloat(km[1])*2.2046*10)/10}
+  return o;
+ }
+ var inp=$('cam'),m=$('scanmsg');
+ inp.addEventListener('change',function(){
   var f=inp.files&&inp.files[0];if(!f)return;
-  var m=$('scanmsg');m.textContent='Reading label...';
-  try{
-   var b=await shrink(f);
-   var r=await sample.json('This is a photo of a fishing line package or spool label. Find the line size and strength. Reply with ONLY JSON: {"type":"pe" or "ny" (pe for braided PE line, ny for nylon, fluorocarbon or mono), "gou": number or null (the Japanese size in gou), "lb": number or null (pound test)}. Use null for anything not printed on the label. If only kg is shown, convert to lb (1 kg = 2.2046 lb). No other text.',{images:[b],modelTier:'quick'});
-   var g=parseFloat(r&&r.gou),l=parseFloat(r&&r.lb);
-   if(r&&(r.type==='pe'||r.type==='ny'))setType(r.type);
-   if(g>0){$('gou').value=g;fromGou();m.textContent='Read from label: '+g+' gou.'}
-   else if(l>0){$('lb').value=l;fromLb();m.textContent='Read from label: '+l+' lb.'}
-   else{m.textContent='No size found on that photo. Try a closer, brighter shot of the label.'}
-  }catch(e){
-   m.textContent=(e&&e.code==='not_granted')?'Allow Claude to read the photo, then try again.':'Could not read that label. Try a closer, brighter photo.';
-  }
-  inp.value='';
+  m.textContent='Loading text reader (first time needs internet)...';
+  $('scandet').hidden=true;
+  loadLib().then(function(){return prep(f)}).then(function(c){
+   m.textContent='Reading label...';
+   return Tesseract.recognize(c,'eng',{logger:function(g){
+    if(g.status==='recognizing text')m.textContent='Reading label... '+Math.round(g.progress*100)+'%';
+   }});
+  }).then(function(r){
+   var t=(r.data&&r.data.text)||'',o=parse(t);
+   $('scanraw').textContent=t.trim()||'(no text found)';$('scandet').hidden=false;
+   if(o.type)setType(o.type);
+   if(o.gou){$('gou').value=o.gou;fromGou();m.textContent='Read '+o.gou+' gou from the label. Check it against the package.'}
+   else if(o.lb){$('lb').value=o.lb;fromLb();m.textContent='Read '+o.lb+' lb from the label. Check it against the package.'}
+   else m.textContent='No size found. Try a closer, brighter, flatter photo, or type it in.';
+  }).catch(function(e){
+   m.textContent=(e&&e.message==='load')?'Could not load the text reader. Check your internet and try again.':'Could not read that photo. Try again or type the size in.';
+  }).then(function(){inp.value=''});
  });
 })();
 table();fromGou();
