@@ -7,240 +7,207 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Line Converter">
-<meta name="theme-color" content="#eef3f2" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0d1d1c" media="(prefers-color-scheme: dark)">
-<title>Gou to lb: fishing line converter</title>
+<meta name="apple-mobile-web-app-title" content="Line Boy">
+<meta name="theme-color" content="#2e2e3a">
+<title>Line Boy: fishing line converter</title>
 <style>
-:root{--bg:#eef3f2;--surface:#fbfdfc;--ink:#12302f;--muted:#5b7473;--accent:#0b6e6a;--line:#c9d9d7;--accent-ink:#fff;
+:root{--body:#cfcbbd;--bez:#5b5b70;--lcd:#9bbc0f;--ink:#0f380f;--blue:#3a3f8f;--mag:#a2204f;--dk:#26262e;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1d1c;--surface:#142928;--ink:#e3f0ee;--muted:#8fa9a7;--accent:#4fc7bf;--line:#264240;--accent-ink:#06201f;color-scheme:dark}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Zen Kaku Gothic New","Hiragino Sans","Segoe UI",system-ui,sans-serif;line-height:1.5}
-main{max-width:520px;margin:0 auto;padding:20px 16px 40px}
-h1{font-size:1.5rem;margin:8px 0 4px;letter-spacing:.01em}
-p.sub{margin:0 0 18px;color:var(--muted)}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
-.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--bg);border-radius:10px;padding:4px;margin-bottom:14px}
-.seg button{border:0;border-radius:7px;padding:10px;font:inherit;background:transparent;color:var(--muted);cursor:pointer}
-.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
-label{display:block;font-size:.9rem;color:var(--muted);margin:0 0 4px}
-.row{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:end}
-input{width:100%;font:inherit;font-size:1.4rem;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
-.eq{padding-bottom:14px;color:var(--muted)}
-button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.out{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
-.out div{background:var(--bg);border-radius:10px;padding:10px 12px}
-.out b{display:block;font-size:1.35rem}
-.out span{font-size:.8rem;color:var(--muted)}
-.note{font-size:.85rem;color:var(--muted);margin:12px 0 0;min-height:1.3em}
-h2{font-size:1.05rem;margin:26px 0 8px}
-.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
-table{border-collapse:collapse;width:100%;font-size:.95rem}
-th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line)}
-th:first-child,td:first-child{text-align:left}
-tr:last-child td{border-bottom:0}
-tbody tr{cursor:pointer}
-tbody tr:hover{background:var(--bg)}
-.fine{font-size:.8rem;color:var(--muted);margin-top:14px}
-.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.row3 input{font-size:1.15rem;padding:10px}
-.wt{margin-top:22px}
-.wt h2{margin-top:0}
-html{-webkit-text-size-adjust:100%}
-body{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
-main{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
-input{-webkit-appearance:none;appearance:none;min-height:48px}
-.seg button{min-height:44px;touch-action:manipulation}
-th,td{padding:12px}
-tbody tr{touch-action:manipulation}
-.scan{display:block;text-align:center;margin-top:14px;padding:14px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:600;cursor:pointer;min-height:48px}
-#scanbox[hidden]{display:none}
+html{height:100%;-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100%;background:#2e2e3a;display:flex;align-items:center;justify-content:center;font-family:"Courier New",ui-monospace,Menlo,monospace;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+.gb{position:relative;width:min(94vw,390px);margin:12px auto;background:var(--body);border-radius:14px 14px 56px 14px;padding:18px 18px 34px;box-shadow:inset -3px -3px 0 rgba(0,0,0,.12),inset 3px 3px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.5)}
+.bz{background:var(--bez);border-radius:10px 10px 38px 10px;padding:10px 20px 8px}
+.bzt{color:#c9c9d8;font-size:.62rem;letter-spacing:.12em;text-align:center;margin-bottom:6px}
+.lcd{background:var(--lcd);color:var(--ink);border-radius:3px;padding:10px 12px;min-height:178px;box-shadow:inset 0 3px 8px rgba(15,56,15,.45);display:flex;flex-direction:column;font-weight:700}
+.top{display:flex;justify-content:space-between;font-size:.78rem;letter-spacing:.08em;border-bottom:2px solid var(--ink);padding-bottom:3px}
+.mv{display:flex;align-items:baseline;gap:8px;margin-top:10px}
+#main{flex:1;min-width:0;width:100%;font:inherit;font-size:2.5rem;line-height:1.1;background:transparent;border:0;border-radius:0;padding:0;color:var(--ink);outline:0;-webkit-appearance:none;appearance:none}
+#main:focus{background:rgba(15,56,15,.15)}
+#unit{font-size:1.1rem}
+#r2{font-size:1.3rem;margin-top:6px}
+#r3{font-size:1rem;margin-top:2px}
+#msg{margin-top:auto;padding-top:8px;font-size:.66rem;letter-spacing:.04em;min-height:1.9em;line-height:1.25}
+.brand{margin:10px 0 0 6px;color:var(--blue);font-weight:700;font-style:italic;font-size:1.15rem}
+.brand small{font-size:.6rem;font-style:normal;letter-spacing:.1em;margin-left:6px}
+.ctl{display:flex;justify-content:space-between;align-items:center;padding:22px 4px 0}
+button{font-family:inherit;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;cursor:pointer;border:0}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.dp{display:grid;grid-template:repeat(3,50px)/repeat(3,50px)}
+.dp button{background:var(--dk);color:#777;font-size:1rem;padding:0}
+.dp button:active{background:#000;color:#ccc}
+.dp i{grid-area:2/2;background:var(--dk)}
+#up{grid-area:1/2;border-radius:8px 8px 0 0}#dn{grid-area:3/2;border-radius:0 0 8px 8px}
+#lf{grid-area:2/1;border-radius:8px 0 0 8px}#rt{grid-area:2/3;border-radius:0 8px 8px 0}
+.ab{position:relative;width:138px;height:100px;transform:rotate(-25deg)}
+.ab button{position:absolute;top:10px;width:58px;height:58px;border-radius:50%;background:var(--mag);box-shadow:0 3px 0 #6d1235}
+.ab button:active{transform:translateY(2px);box-shadow:0 1px 0 #6d1235}
+.ab span,.sb span{position:absolute;color:var(--blue);font-weight:700;font-size:.8rem}
+.ss{display:flex;justify-content:center;gap:26px;margin-top:30px;transform:rotate(-25deg);padding-right:40px}
+.sb{position:relative;width:56px;height:34px}
+.sb button{width:56px;height:14px;border-radius:8px;background:#8a8a8a;box-shadow:0 2px 0 #62625a}
+.sb span{top:18px;left:0;font-size:.55rem;letter-spacing:.06em}
+.grill{position:absolute;right:26px;bottom:24px;width:62px;height:44px;background:repeating-linear-gradient(-65deg,#a8a496 0 5px,transparent 5px 11px);transform:rotate(-25deg) skewX(-5deg)}
 </style>
 </head>
 <body>
-<main>
-<h1>Gou to lb line converter</h1>
-<p class="sub">Japanese line numbers (号) to American pound test.</p>
-<div class="card">
-<div class="seg" role="group" aria-label="Line type">
-<button id="t-pe" aria-pressed="true">PE braid</button>
-<button id="t-ny" aria-pressed="false">Nylon / fluoro</button>
+<div class="gb">
+<div class="bz">
+<div class="bzt">&#9664; LINE CONVERTER &#9654;</div>
+<div class="lcd">
+<div class="top"><span id="lt">LINE PE</span><span id="lr">IN: GOU</span></div>
+<div class="mv"><input id="main" type="number" inputmode="decimal" step="any" min="0" aria-label="Value"><span id="unit">GOU</span></div>
+<div id="r2"></div><div id="r3"></div>
+<div id="msg" aria-live="polite"></div>
 </div>
-<div class="row">
-<div><label for="gou">Japanese size (gou)</label><input id="gou" type="number" inputmode="decimal" step="0.1" min="0" value="1.0"></div>
-<div class="eq">=</div>
-<div><label for="lb">US test (lb)</label><input id="lb" type="number" inputmode="decimal" step="1" min="0"></div>
 </div>
-<div class="out">
-<div><b id="o-lb">-</b><span>lb test</span></div>
-<div><b id="o-kg">-</b><span>kg</span></div>
-<div><b id="o-mm">-</b><span>diameter mm</span></div>
+<div class="brand">Line Boy<small>JP &#10132; US</small></div>
+<div class="ctl">
+<div class="dp"><button id="up" aria-label="Increase">&#9650;</button><button id="lf" aria-label="Previous size">&#9664;</button><i></i><button id="rt" aria-label="Next size">&#9654;</button><button id="dn" aria-label="Decrease">&#9660;</button></div>
+<div class="ab"><button id="bB" style="left:4px" aria-label="B: line type"></button><span style="left:25px;top:76px">B</span><button id="bA" style="left:72px" aria-label="A: scan label"></button><span style="left:93px;top:76px">A</span></div>
 </div>
-<p class="note" id="note"></p>
-<div id="scanbox">
-<label class="scan" for="cam">📷 Scan a line label</label>
+<div class="ss"><div class="sb"><button id="bSel" aria-label="Select: change unit"></button><span>SELECT</span></div><div class="sb"><button id="bSta" aria-label="Start: line or weight"></button><span>START</span></div></div>
+<div class="grill"></div>
 <input id="cam" type="file" accept="image/*" capture="environment" hidden>
-<p class="note" id="scanmsg"></p>
-<details id="scandet" hidden><summary class="note">Text it read</summary><pre id="scanraw" style="white-space:pre-wrap;font-size:.8rem;color:var(--muted);margin:6px 0 0"></pre></details>
 </div>
-</div>
-<div class="card wt">
-<h2>Weight converter</h2>
-<div class="row3">
-<div><label for="wg">Grams</label><input id="wg" type="number" inputmode="decimal" step="any" min="0" value="3.75"></div>
-<div><label for="woz">Ounces</label><input id="woz" type="number" inputmode="decimal" step="any" min="0"></div>
-<div><label for="wgou">Sinker gou</label><input id="wgou" type="number" inputmode="decimal" step="any" min="0"></div>
-</div>
-<p class="note">Japanese sinkers and jig heads use gou (号, also called monme): 1 gou = 3.75 g. Common for lure weights: 7 g is about 1/4 oz, 14 g about 1/2 oz.</p>
-</div>
-<h2>Quick chart <span style="font-weight:400;color:var(--muted);font-size:.85rem">(tap a row)</span></h2>
-<div class="scroll"><table><thead><tr><th>Gou</th><th>lb</th><th>mm</th><th>in</th></tr></thead><tbody id="tb"></tbody></table></div>
-<p class="fine">Values are typical averages. Brands differ, so check the package. Breaking strength is based on the usual Japanese rules of thumb, not a standard.</p>
-</main>
 <script>
-// [gou, lb, mm]
 var D={
 pe:[[0.2,4,0.074],[0.3,5,0.09],[0.4,6,0.104],[0.6,8,0.128],[0.8,12,0.148],[1,16,0.165],[1.2,20,0.185],[1.5,25,0.205],[2,32,0.235],[2.5,40,0.26],[3,48,0.29],[4,60,0.33],[5,72,0.37],[6,85,0.4],[8,100,0.47],[10,130,0.52]],
 ny:[[0.4,1.5,0.104],[0.6,2.5,0.128],[0.8,3,0.148],[1,4,0.165],[1.5,6,0.205],[2,8,0.235],[3,12,0.285],[4,16,0.33],[5,20,0.37],[6,25,0.405],[8,30,0.47],[10,40,0.52],[12,50,0.57],[16,60,0.66],[20,80,0.74]]
 };
-var type='pe';
+var PRE=[1,1.8,3.5,5,7,10,14,21,28,35,42,56,84];
+var WF={g:1,oz:28.3495,gou:3.75},WD={g:2,oz:3,gou:2},WU={g:'G',oz:'OZ',gou:'GOU'};
+var S={mode:'line',type:'pe',src:'gou',v:1,g:3.75,w:'g'};
 var $=function(i){return document.getElementById(i)};
-function interp(t,from,to,x){
- var r=D[t],i=0;
- if(x<=r[0][from]){var a=r[0],b=r[1]}
- else if(x>=r[r.length-1][from]){var a=r[r.length-2],b=r[r.length-1]}
- else{for(i=0;i<r.length-1;i++){if(x>=r[i][from]&&x<=r[i+1][from])break}var a=r[i],b=r[i+1]}
- var f=(x-a[from])/(b[from]-a[from]);
- return Math.max(0,a[to]+f*(b[to]-a[to]));
+function R(x,d){var p=Math.pow(10,d);return Math.round(x*p)/p}
+function cl(x,a,b){return Math.min(b,Math.max(a,x))}
+function interp(t,f,to,x){
+ var r=D[t],i=0,a,b;
+ if(x<=r[0][f]){a=r[0];b=r[1]}
+ else if(x>=r[r.length-1][f]){a=r[r.length-2];b=r[r.length-1]}
+ else{for(i=0;i<r.length-1;i++){if(x>=r[i][f]&&x<=r[i+1][f])break}a=r[i];b=r[i+1]}
+ return Math.max(0,a[to]+(x-a[f])/(b[f]-a[f])*(b[to]-a[to]));
 }
-function fmt(n,d){return (Math.round(n*Math.pow(10,d))/Math.pow(10,d)).toString()}
-function show(g,l){
- var m=interp(type,1,2,l);
- $('o-lb').textContent=fmt(l,1);
- $('o-kg').textContent=fmt(l*0.4536,1);
- $('o-mm').textContent=fmt(m,3);
- var r=D[type],out=g<r[0][0]||g>r[r.length-1][0];
- $('note').textContent=out?'Outside the common range, so this is an estimate.':'';
-}
-function fromGou(){
- var g=parseFloat($('gou').value);
- if(!(g>0)){$('lb').value='';['o-lb','o-kg','o-mm'].forEach(function(i){$(i).textContent='-'});$('note').textContent='Enter a gou size above 0.';return}
- var l=interp(type,0,1,g);
- $('lb').value=fmt(l,1);show(g,l);
-}
-function fromLb(){
- var l=parseFloat($('lb').value);
- if(!(l>0)){$('gou').value='';['o-lb','o-kg','o-mm'].forEach(function(i){$(i).textContent='-'});$('note').textContent='Enter a pound test above 0.';return}
- var g=interp(type,1,0,l);
- $('gou').value=fmt(g,2);show(g,l);
-}
-function setType(t){
- type=t;
- $('t-pe').setAttribute('aria-pressed',t==='pe');
- $('t-ny').setAttribute('aria-pressed',t==='ny');
- fromGou();table();
-}
-function table(){
- var h='';
- D[type].forEach(function(r){
-  h+='<tr data-g="'+r[0]+'"><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+fmt(r[2]/25.4,4)+'</td></tr>';
- });
- $('tb').innerHTML=h;
-}
-$('gou').addEventListener('input',fromGou);
-$('lb').addEventListener('input',fromLb);
-$('t-pe').onclick=function(){setType('pe')};
-$('t-ny').onclick=function(){setType('ny')};
-$('tb').addEventListener('click',function(e){
- var tr=e.target.closest('tr');if(!tr)return;
- $('gou').value=tr.getAttribute('data-g');fromGou();
- window.scrollTo({top:0,behavior:'smooth'});
-});
-var G_OZ=28.3495,G_GOU=3.75;
-function setW(g,skip){
- if(skip!=='wg')$('wg').value=fmt(g,2);
- if(skip!=='woz')$('woz').value=fmt(g/G_OZ,3);
- if(skip!=='wgou')$('wgou').value=fmt(g/G_GOU,2);
-}
-function clearW(skip){['wg','woz','wgou'].forEach(function(i){if(i!==skip)$(i).value=''})}
-[['wg',1],['woz',G_OZ],['wgou',G_GOU]].forEach(function(p){
- $(p[0]).addEventListener('input',function(){
-  var v=parseFloat($(p[0]).value);
-  if(!(v>0)){clearW(p[0]);return}
-  setW(v*p[1],p[0]);
- });
-});
-setW(3.75);
-(function(){
- var TV='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js',loading=null;
- function loadLib(){
-  if(window.Tesseract)return Promise.resolve();
-  if(!loading)loading=new Promise(function(res,rej){
-   var sc=document.createElement('script');sc.src=TV;sc.onload=res;
-   sc.onerror=function(){loading=null;rej(new Error('load'))};
-   document.head.appendChild(sc);
-  });
-  return loading;
+var hint='A:SCAN B:TYPE SELECT:UNIT START:MODE',ft=0;
+function flash(t,ms){clearTimeout(ft);$('msg').textContent=t;if(ms!==0)ft=setTimeout(function(){$('msg').textContent=hint},ms||3500)}
+function lv(){var g,l;if(S.src==='gou'){g=S.v;l=interp(S.type,0,1,g)}else{l=S.v;g=interp(S.type,1,0,l)}return{gou:g,lb:l}}
+function render(skip){
+ var a,b,t,u,v;
+ if(S.mode==='line'){
+  var x=lv();t='LINE '+(S.type==='pe'?'PE':'NYLON');u=S.src==='gou'?'GOU':'LB';v=S.v;
+  a=S.src==='gou'?'= '+R(x.lb,1)+' LB':'= '+R(x.gou,2)+' GOU';
+  b=R(x.lb*0.4536,1)+' KG  '+R(interp(S.type,1,2,x.lb),3)+' MM';
+ }else{
+  t='WEIGHT';u=WU[S.w];v=R(S.g/WF[S.w],WD[S.w]);
+  var o=['g','oz','gou'].filter(function(k){return k!==S.w});
+  a='= '+R(S.g/WF[o[0]],WD[o[0]])+' '+WU[o[0]];
+  b='= '+R(S.g/WF[o[1]],WD[o[1]])+' '+WU[o[1]];
  }
- function prep(file){return new Promise(function(res,rej){
-  var img=new Image(),u=URL.createObjectURL(file);
-  img.onload=function(){
-   var k=Math.min(1,1800/Math.max(img.width,img.height)),c=document.createElement('canvas');
-   c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
-   var x=c.getContext('2d');x.drawImage(img,0,0,c.width,c.height);
-   URL.revokeObjectURL(u);
-   try{
-    var d=x.getImageData(0,0,c.width,c.height),p=d.data;
-    for(var i=0;i<p.length;i+=4){
-     var g=0.299*p[i]+0.587*p[i+1]+0.114*p[i+2];
-     g=(g-128)*1.5+128;g=g<0?0:g>255?255:g;
-     p[i]=p[i+1]=p[i+2]=g;
-    }
-    x.putImageData(d,0,0);
-   }catch(e){}
-   res(c);
-  };
-  img.onerror=function(){rej(new Error('img'))};
-  img.src=u;
- })}
- function ok(v){return v>=0.1&&v<=30}
- function parse(t){
-  t=t.replace(/(\d),(\d)/g,'$1.$2');
-  var o={type:null,gou:null,lb:null};
-  if(/\bPE\b|braid|\bX[48]\b|\bWX/i.test(t))o.type='pe';
-  else if(/nylon|fluoro|\bFC\b|mono/i.test(t))o.type='ny';
-  var res=[/(\d+(?:\.\d+)?)\s*(?:gou|go\b|\u53f7)/i,/\bPE\s*(?:No\.?|#)?\s*(\d+(?:\.\d+)?)/i,/\bNo\.?\s*(\d+(?:\.\d+)?)/i];
-  for(var i=0;i<res.length&&o.gou===null;i++){var m=res[i].exec(t);if(m&&ok(parseFloat(m[1])))o.gou=parseFloat(m[1])}
-  var lm=/(\d+(?:\.\d+)?)\s*-?\s*(?:lbs?|ibs?)\b/i.exec(t);
-  if(lm)o.lb=parseFloat(lm[1]);
-  else{var km=/(\d+(?:\.\d+)?)\s*kg/i.exec(t);if(km)o.lb=Math.round(parseFloat(km[1])*2.2046*10)/10}
-  return o;
- }
- var inp=$('cam'),m=$('scanmsg');
- inp.addEventListener('change',function(){
-  var f=inp.files&&inp.files[0];if(!f)return;
-  m.textContent='Loading text reader (first time needs internet)...';
-  $('scandet').hidden=true;
-  loadLib().then(function(){return prep(f)}).then(function(c){
-   m.textContent='Reading label...';
-   return Tesseract.recognize(c,'eng',{logger:function(g){
-    if(g.status==='recognizing text')m.textContent='Reading label... '+Math.round(g.progress*100)+'%';
-   }});
-  }).then(function(r){
-   var t=(r.data&&r.data.text)||'',o=parse(t);
-   $('scanraw').textContent=t.trim()||'(no text found)';$('scandet').hidden=false;
-   if(o.type)setType(o.type);
-   if(o.gou){$('gou').value=o.gou;fromGou();m.textContent='Read '+o.gou+' gou from the label. Check it against the package.'}
-   else if(o.lb){$('lb').value=o.lb;fromLb();m.textContent='Read '+o.lb+' lb from the label. Check it against the package.'}
-   else m.textContent='No size found. Try a closer, brighter, flatter photo, or type it in.';
-  }).catch(function(e){
-   m.textContent=(e&&e.message==='load')?'Could not load the text reader. Check your internet and try again.':'Could not read that photo. Try again or type the size in.';
-  }).then(function(){inp.value=''});
+ $('lt').textContent=t;$('lr').textContent='IN: '+u;$('unit').textContent=u;$('r2').textContent=a;$('r3').textContent=b;
+ if(!skip)$('main').value=R(v,3);
+}
+function adj(d){
+ if(S.mode==='line'){S.v=S.src==='gou'?R(cl(S.v+d*0.1,0.1,30),2):R(cl(S.v+d,0.5,200),1)}
+ else S.g=R(cl(S.g+d*(S.w==='g'?0.5:S.w==='oz'?0.05*28.3495:0.1*3.75),0.1,500),3);
+ render();
+}
+function nxt(l,v,d){var n=null;l.forEach(function(x){if(d>0&&x>v+1e-6&&n===null)n=x;if(d<0&&x<v-1e-6)n=x});return n}
+function jump(d){
+ var n;
+ if(S.mode==='line'){n=nxt(D[S.type].map(function(r){return S.src==='gou'?r[0]:r[1]}),S.v,d);if(n!==null)S.v=n}
+ else{n=nxt(PRE,S.g,d);if(n!==null)S.g=n}
+ render();
+}
+function sel(){
+ if(S.mode==='line'){var x=lv();if(S.src==='gou'){S.src='lb';S.v=R(x.lb,1)}else{S.src='gou';S.v=R(x.gou,2)}}
+ else S.w=S.w==='g'?'oz':S.w==='oz'?'gou':'g';
+ render();
+}
+function typ(){if(S.mode!=='line'){flash('B WORKS IN LINE MODE');return}S.type=S.type==='pe'?'ny':'pe';render();flash(S.type==='pe'?'PE BRAID':'NYLON / FLUORO')}
+function mode(){S.mode=S.mode==='line'?'wt':'line';render();flash(S.mode==='line'?'LINE MODE':'WEIGHT MODE')}
+function hold(id,d){
+ var el=$(id),t,iv;
+ function stop(){clearTimeout(t);clearInterval(iv)}
+ el.addEventListener('pointerdown',function(e){e.preventDefault();adj(d);stop();t=setTimeout(function(){iv=setInterval(function(){adj(d)},90)},350)});
+ ['pointerup','pointerleave','pointercancel'].forEach(function(n){el.addEventListener(n,stop)});
+}
+hold('up',1);hold('dn',-1);
+$('lf').onclick=function(){jump(-1)};$('rt').onclick=function(){jump(1)};
+$('bB').onclick=typ;$('bSel').onclick=sel;$('bSta').onclick=mode;
+$('main').addEventListener('input',function(){
+ var v=parseFloat(this.value);if(!(v>0))return;
+ if(S.mode==='line')S.v=v;else S.g=v*WF[S.w];
+ render(true);
+});
+document.addEventListener('keydown',function(e){
+ if(e.target.tagName==='INPUT')return;
+ var k=e.key;
+ if(k==='ArrowUp')adj(1);else if(k==='ArrowDown')adj(-1);else if(k==='ArrowLeft')jump(-1);else if(k==='ArrowRight')jump(1);else return;
+ e.preventDefault();
+});
+/* label scan: Claude when hosted on claude.ai, otherwise in-browser OCR */
+var cam=$('cam'),loading=null;
+$('bA').onclick=function(){cam.click()};
+function loadLib(){
+ if(window.Tesseract)return Promise.resolve();
+ if(!loading)loading=new Promise(function(res,rej){
+  var sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+  sc.onload=res;sc.onerror=function(){loading=null;rej(new Error('load'))};document.head.appendChild(sc);
  });
-})();
-table();fromGou();
+ return loading;
+}
+function prep(file,max,gray){return new Promise(function(res,rej){
+ var img=new Image(),u=URL.createObjectURL(file);
+ img.onload=function(){
+  var k=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');
+  c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+  var x=c.getContext('2d');x.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);
+  if(gray)try{
+   var d=x.getImageData(0,0,c.width,c.height),p=d.data;
+   for(var i=0;i<p.length;i+=4){var g=0.299*p[i]+0.587*p[i+1]+0.114*p[i+2];g=(g-128)*1.5+128;p[i]=p[i+1]=p[i+2]=g<0?0:g>255?255:g}
+   x.putImageData(d,0,0);
+  }catch(e){}
+  res(c);
+ };
+ img.onerror=function(){rej(new Error('img'))};img.src=u;
+})}
+function ok(v){return v>=0.1&&v<=30}
+function parse(t){
+ t=t.replace(/(\d),(\d)/g,'$1.$2');
+ var o={type:null,gou:null,lb:null};
+ if(/\bPE\b|braid|\bX[48]\b|\bWX/i.test(t))o.type='pe';else if(/nylon|fluoro|\bFC\b|mono/i.test(t))o.type='ny';
+ var re=[/(\d+(?:\.\d+)?)\s*(?:gou|go\b|\u53f7)/i,/\bPE\s*(?:No\.?|#)?\s*(\d+(?:\.\d+)?)/i,/\bNo\.?\s*(\d+(?:\.\d+)?)/i];
+ for(var i=0;i<re.length&&o.gou===null;i++){var m=re[i].exec(t);if(m&&ok(parseFloat(m[1])))o.gou=parseFloat(m[1])}
+ var lm=/(\d+(?:\.\d+)?)\s*-?\s*(?:lbs?|ibs?)\b/i.exec(t);
+ if(lm)o.lb=parseFloat(lm[1]);else{var km=/(\d+(?:\.\d+)?)\s*kg/i.exec(t);if(km)o.lb=R(parseFloat(km[1])*2.2046,1)}
+ return o;
+}
+async function viaClaude(f){
+ var sm=await claude.use('sample');if(!sm)return null;
+ var lim=await sm.limits();if(!lim||!lim.images)return null;
+ var c=await prep(f,1400,false),b=await new Promise(function(r){c.toBlob(r,'image/jpeg',0.85)});
+ return await sm.json('This is a photo of a fishing line package or spool label. Find the line size and strength. Reply with ONLY JSON: {"type":"pe" or "ny" (pe for braided PE line, ny for nylon, fluorocarbon or mono), "gou": number or null (the Japanese size in gou), "lb": number or null (pound test)}. Use null for anything not printed on the label. If only kg is shown, convert to lb (1 kg = 2.2046 lb). No other text.',{images:[b],modelTier:'quick'});
+}
+async function viaOcr(f){
+ await loadLib();
+ var c=await prep(f,1800,true);
+ var r=await Tesseract.recognize(c,'eng',{logger:function(g){if(g.status==='recognizing text')flash('READING '+Math.round(g.progress*100)+'%',0)}});
+ return parse((r.data&&r.data.text)||'');
+}
+cam.addEventListener('change',async function(){
+ var f=cam.files&&cam.files[0];if(!f)return;
+ flash('LOADING...',0);
+ var o=null;
+ try{if(window.claude)o=await viaClaude(f)}catch(e){if(e&&e.code==='not_granted'){flash('ALLOW PHOTO ACCESS, TRY AGAIN');cam.value='';return}}
+ if(!o){try{o=await viaOcr(f)}catch(e){flash(e&&e.message==='load'?'NEEDS INTERNET TO READ':'COULD NOT READ PHOTO');cam.value='';return}}
+ var g=parseFloat(o&&o.gou),l=parseFloat(o&&o.lb);
+ if(o&&(o.type==='pe'||o.type==='ny'))S.type=o.type;
+ if(g>0){S.mode='line';S.src='gou';S.v=g;render();flash('READ '+g+' GOU. CHECK PACKAGE')}
+ else if(l>0){S.mode='line';S.src='lb';S.v=l;render();flash('READ '+l+' LB. CHECK PACKAGE')}
+ else flash('NO SIZE FOUND. TYPE IT IN');
+ cam.value='';
+});
+render();flash(hint);
 </script>
 <script>if("serviceWorker"in navigator&&location.protocol.indexOf("http")===0){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script>
 </body>
